@@ -1,0 +1,33 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	min-height: 100vh;
+}
+
+header {
+	min-height: 10vh;
+	background-color: lightblue;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+main {
+	min-height: 90vh;
+	background-color: aquamarine;
+	padding: 30px 10% 0;
+}
+
+.shows-container {
+	min-height: max-content;
+	border: 1px solid black;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	grid-template-rows: repeat(2, 300px);
+	grid-auto-rows: 300px;
+	gap: 20px;
+}
