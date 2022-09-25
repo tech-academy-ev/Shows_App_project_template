@@ -27,7 +27,7 @@ class Show {
     }
 
     getImage() {
-        return this.image;
+        return this.image ? this.image : "https://via.placeholder.com/210x295/111217/FFFFFF/?text=No%20Image";
     }
 
     getWebsiteUrl() {

@@ -1,25 +1,186 @@
-* {
+*, *::after, *::before {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
+button {
+	font: inherit;
+	border: none;
+	cursor: pointer;
+}
+
+input, label {
+	font: inherit;
+}
+
+:root {
+	--_hue: 240;
+	--_size: 2.2rem;
+	--_radius: .2em;
+	--_tspeed_fast: 150ms;
+	--_tspeed_slow: 400ms;
+	--_ttype_squish: cubic-bezier(0.86, -0.1, 0.27, 1.15);
+
+	--bg--light: var(--_hue) 30% 94%;
+	--txt--light: var(--_hue) 40% 5%;
+	--accent--light: var(--_hue) 55% 50%;
+	--muted--light: var(--_hue) 30% 99%;
+
+	--bg--dark: var(--_hue) 15% 10%;
+	--txt--dark: var(--_hue) 30% 88%;
+	--accent--dark: var(--_hue) 50% 50%;
+	--muted--dark: var(--_hue) 20% 4%;
+
+	--bg: var(--bg--light);
+	--txt: var(--txt--light);
+	--accent: var(--accent--light);
+	--muted: var(--muted--light);
+	color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: var(--bg--dark);
+		--txt: var(--txt--dark);
+		--accent: var(--accent--dark);
+		--muted: var(--muted--dark);
+		color-scheme: dark;
+	}
+}
+
+
 body {
 	min-height: 100vh;
+	font-family: "Roboto Condensed", sans-serif;
+	background-color: hsl(var(--bg));
+	color: hsl(var(--txt));
+	padding:0px 10% 0;
 }
+
+h1 {
+	font-size: calc(var(--_size) * 1.3);
+}
+
 
 header {
 	min-height: 10vh;
-	background-color: lightblue;
+	/* background-color: lightblue; */
 	display: flex;
-	justify-content: center;
+	justify-content: left;
 	align-items: center;
+	text-align: center;
+	padding: 0px 10% 0;
+	outline:2px solid green;
 }
 
 main {
 	min-height: 90vh;
-	background-color: aquamarine;
-	padding: 30px 10% 0;
+	/* background-color: aquamarine; */
+}
+
+.input-wrapper {
+  position: relative;
+  display: grid;
+  gap: .2em;
+  margin-block-start: .6em;
+}
+
+
+.form-label {
+	text-transform: uppercase;
+	font-size: 0.7em;
+	letter-spacing: 0.05em;
+	margin-inline: 0.45em;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0.1em 0.35em;
+	background-color: hsl(var(--muted));
+	transition: transform var(--_tspeed_fast) var(--_ttype_squish),
+	  background-color var(--_tspeed_fast) var(--_ttype_squish);
+  }
+  
+  .form-input {
+	border: none;
+	border-radius: var(--_radius);
+	padding: 0.35em 0.55em;
+	width: 100%;
+	background-color: hsl(var(--muted));
+	caret-color: hsl(var(--accent));
+	box-shadow: 0 0 0 -0.1em hsl(var(--bg)),
+	  0 0 0 -0.2em hsl(var(--accent) / 0.8);
+	transition: box-shadow var(--_tspeed_slow) var(--_ttype_squish);
+  }
+  
+  .form-input:focus {
+	outline: none;
+	box-shadow: 0 0 0 0.2em hsl(var(--bg)),
+	  0 0 0 0.4em hsl(var(--accent) / 0.8);
+  }
+  
+  .form-input:focus ~ .form-label,
+  .form-input:not(:placeholder-shown) ~ .form-label {
+	transform: translate3d(0, -2.75em, 0);
+	background-color: hsl(var(--bg));
+	color: hsl(var(--accent) / 0.8);
+  }
+  
+  .form-input::placeholder {
+	opacity: 0;
+  }
+
+  .btn {
+	max-width: fit-content;
+	display: flex;
+	place-items: center;
+	gap: 0.5em;
+	background-color: hsl(var(--accent));
+	color: hsl(var(--bg));
+	text-decoration: none;
+	padding: 0.4em 1.4em;
+	border-radius: var(--_radius);
+	box-shadow: 0.05em 0.1em 0.9em hsl(var(--accent) / 0.3),
+	  0 0 0 -0.1em hsl(var(--bg)), 0 0 0 -0.2em hsl(var(--accent));
+	transition: box-shadow var(--_tspeed_slow) var(--_ttype_squish),
+	  background-color var(--_tspeed_slow) var(--_ttype_squish);
+	margin-left: 10px;
+	margin-top:10px;
+  }
+  
+  .btn :where(svg, img, span) {
+	pointer-events: none;
+  }
+  
+  .btn :where(svg, img) {
+	width: var(--_size);
+  }
+  
+  .btn:where(:active, :hover) {
+	background-color: hsl(var(--accent) / 0.7);
+	box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 -0.1em hsl(var(--bg)),
+	  0 0 0 -0.2em hsl(var(--accent));
+  }
+  
+  .btn:focus {
+	outline: none;
+  }
+  
+  .btn:focus-visible {
+	box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 0.2em hsl(var(--bg)),
+	  0 0 0 0.4em hsl(var(--accent) / 0.7);
+  }
+
+img{
+	max-width: 85%;
+  }
+
+form {
+	display: grid;
+	gap: .8em;
+	max-width: 30%;
+	text-align: left;
+	padding-block: .5em;
 }
 
 .shows-container {
@@ -30,4 +191,20 @@ main {
 	grid-template-rows: repeat(2, 300px);
 	grid-auto-rows: 300px;
 	gap: 20px;
+}
+
+.show {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	outline: 2px solid red;
+}
+
+.show-name {
+	font-size: large;
+	font-weight: bold;
+}
+
+#show-input input {
+	vertical-align: top;
 }

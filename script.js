@@ -36,9 +36,29 @@ function getRelevantInformationFromJsonData(allShowsData) {
 }
 
 function renderShowsToPage(allShowsList) {
-    for (show of allShowsList) {
-        console.log(show.getWebsiteUrl());
-    }
+  const showTabDiv = document.getElementById("movie-tab");
+  showTabDiv.innerHTML = "";
+  for (show of allShowsList) {
+    let showDiv = document.createElement("div");
+    showDiv.classList.add("show");
+    let nameDiv = document.createElement("div");
+    nameDiv.textContent = show.getName();
+    nameDiv.classList.add("show-name");
+    let showImg = document.createElement("img");
+    showImg.src = show.getImage();
+
+    showDiv.append(nameDiv, showImg);
+    showTabDiv.appendChild(showDiv);
+  }
 }
 
-fetchFromTvMazeAPI("girls");
+
+const form = document.getElementById("inputs");
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let input = document.getElementById("show-input").value;
+  console.log(input);
+  fetchFromTvMazeAPI(input);
+});
+
+fetchFromTvMazeAPI("man");
