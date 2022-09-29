@@ -71,7 +71,7 @@ header {
 	align-items: center;
 	text-align: center;
 	padding: 0px 10% 0;
-	outline:2px solid green;
+	/* outline:2px solid green; */
 }
 
 main {
@@ -185,7 +185,7 @@ form {
 
 .shows-container {
 	min-height: max-content;
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	grid-template-rows: repeat(2, 300px);
@@ -197,7 +197,8 @@ form {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	outline: 2px solid red;
+	justify-content: space-between;
+	/* outline: 2px solid red; */
 }
 
 .show-name {
@@ -220,8 +221,8 @@ form {
 	transform: translate(-50%, -50%) scale(0);
 	transition: 300ms ease-in-out;
 	border: 2px solid black;
-	width: 800px;
-	height: 400px;
+	width: 80%;
+	height: 80%;
 	z-index: 1;
 	background-color: white;
 	color: black;
@@ -230,6 +231,10 @@ form {
 
 .modal.active {
 	transform: translate(-50%, -50%) scale(1);
+}
+
+.modal div {
+	margin-right: 50px;
 }
 
 .show-image {
@@ -245,10 +250,10 @@ form {
 	margin-top: 10px;
 	font-size: 14px;
 	line-height: 20px;
-	width: 350px;
 }
 
-.modal div :last-child {
+.url-container {
+	margin-top: 30px;
 	font-size: 14px;
 	line-height: 20px;
 	text-align: right;
@@ -258,6 +263,16 @@ form {
 	position: absolute;
 	top: 20px;
 	right: 20px;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	background-color: transparent;
+	color: black;
+	transition: all 200ms ease-in-out;
+}
+
+#close-modal:hover {
+	background-color: tomato;
 }
 
 #overlay {

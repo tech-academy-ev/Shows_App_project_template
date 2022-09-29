@@ -71,7 +71,7 @@ form.addEventListener("submit", (e) => {
   fetchFromTvMazeAPI(input);
 });
 
-fetchFromTvMazeAPI("man");
+fetchFromTvMazeAPI("star wars"); // :)
 
 // Modal functionality
 const modal = document.querySelector('.modal');
@@ -105,6 +105,11 @@ function openModal(show) {
 
 function fillModalWithShowData(show) {
     console.log(show)
+    modalShowTitle.textContent = show.name
+    modalShowImg.src = show.image ? show.image : "https://via.placeholder.com/210x295/111217/FFFFFF/?text=No%20Image"
+    modalShowSummary.innerHTML = show.summary
+    modalShowTags.textContent = `${show.language ? show.language : ""} - ${show.mainGenre ? show.mainGenre : ""}`
+    modalShowUrl.href = show.tvMazeUrl
     // 1. delete the old data
     // 2. get the data from the clicked show
     // 3. display the data in the dom
