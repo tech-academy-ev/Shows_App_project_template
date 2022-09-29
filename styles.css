@@ -208,3 +208,71 @@ form {
 #show-input input {
 	vertical-align: top;
 }
+
+.modal {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0);
+	transition: 300ms ease-in-out;
+	border: 2px solid black;
+	width: 800px;
+	height: 400px;
+	z-index: 1;
+	background-color: white;
+	color: black;
+	border-radius: 15px;
+}
+
+.modal.active {
+	transform: translate(-50%, -50%) scale(1);
+}
+
+.show-image {
+	margin: 0 100px 0 100px;
+}
+
+.show-tags {
+	color: rgba(0, 0, 0, 0.4);
+	margin-top: 10px;
+}
+
+.show-summary {
+	margin-top: 10px;
+	font-size: 14px;
+	line-height: 20px;
+	width: 350px;
+}
+
+.modal div :last-child {
+	font-size: 14px;
+	line-height: 20px;
+	text-align: right;
+}
+
+#close-modal {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+#overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	opacity: 0;
+	transition: 300ms ease-in-out;
+	background-color: rgba(0, 0, 0, 0.5);
+	pointer-events: none; /* This makes our pointer events (clicks) work through the overlay */
+}
+
+#overlay.active {
+	opacity: 1;
+	pointer-events: all;
+}

@@ -38,7 +38,7 @@ function getRelevantInformationFromJsonData(allShowsData) {
 function renderShowsToPage(allShowsList) {
   const showTabDiv = document.getElementById("movie-tab");
   showTabDiv.innerHTML = "";
-  for (show of allShowsList) {
+  for (let show of allShowsList) {
     let showDiv = document.createElement("div");
     showDiv.classList.add("show");
     let nameDiv = document.createElement("div");
@@ -46,6 +46,16 @@ function renderShowsToPage(allShowsList) {
     nameDiv.classList.add("show-name");
     let showImg = document.createElement("img");
     showImg.src = show.getImage();
+
+    showDiv.addEventListener('click', (e) => {
+        let clickedShow
+        if (e.path.length === 8) {
+            clickedShow = e.path[1]
+        } else {
+            clickedShow = e.path[0]
+        }
+        openModal(show)
+    });
 
     showDiv.append(nameDiv, showImg);
     showTabDiv.appendChild(showDiv);
@@ -62,3 +72,40 @@ form.addEventListener("submit", (e) => {
 });
 
 fetchFromTvMazeAPI("man");
+
+// Modal functionality
+const modal = document.querySelector('.modal');
+const overlay = document.getElementById('overlay');
+const closeModalButton = document.querySelector('[data-close-modal]');
+const modalShowTitle = document.querySelector(".show-title")
+const modalShowTags = document.querySelector(".show-tags")
+const modalShowSummary = document.querySelector(".show-summary")
+const modalShowUrl= document.querySelector(".show-url")
+const modalShowImg= document.querySelector(".show-image")
+
+
+closeModalButton.addEventListener('click', () => {
+    closeModal();
+});
+
+overlay.addEventListener('click', () => {
+    closeModal();
+});
+
+function closeModal() {
+    modal.classList.remove('active');
+	overlay.classList.remove('active');
+}
+
+function openModal(show) {
+	modal.classList.add('active');
+	overlay.classList.add('active');
+    fillModalWithShowData(show)
+}
+
+function fillModalWithShowData(show) {
+    console.log(show)
+    // 1. delete the old data
+    // 2. get the data from the clicked show
+    // 3. display the data in the dom
+}
