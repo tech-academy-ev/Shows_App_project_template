@@ -1,3 +1,5 @@
+let favouriteShows = [];
+
 async function fetchFromTvMazeAPI(searchQuery) {
     try {
         const response = await fetch(
@@ -41,13 +43,22 @@ function renderShowsToPage(allShowsList) {
   for (show of allShowsList) {
     let showDiv = document.createElement("div");
     showDiv.classList.add("show");
+    let headlineDiv = document.createElement("div");
     let nameDiv = document.createElement("div");
     nameDiv.textContent = show.getName();
     nameDiv.classList.add("show-name");
+    let star = document.createElement("div");
+    star.classList.add("star");
+    star.innerHTML = `<i class="fa-regular fa-star" onmouseover="this.className = 'fa-solid fa-star'"; onmouseout="this.className='fa-regular fa-star'" ></i>`;
+    star.addEventListener("click", (e) => {
+      favouriteShows.push(e.currentTarget.parentNode.firstChild.innerText);
+      console.log(favouriteShows);
+    }) 
     let showImg = document.createElement("img");
     showImg.src = show.getImage();
-
-    showDiv.append(nameDiv, showImg);
+    headlineDiv.append(nameDiv, star);
+    headlineDiv.classList.add("showHeadline");
+    showDiv.append(headlineDiv, showImg);
     showTabDiv.appendChild(showDiv);
   }
 }

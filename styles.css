@@ -208,3 +208,20 @@ form {
 #show-input input {
 	vertical-align: top;
 }
+
+.showHeadline {
+	width: 85%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+
+.fa-star:hover {
+	color: goldenrod;
+
+}
+
+.star {
+	cursor: pointer;
+}
