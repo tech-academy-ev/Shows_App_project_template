@@ -40,25 +40,38 @@ function getRelevantInformationFromJsonData(allShowsData) {
 function renderShowsToPage(allShowsList) {
   const showTabDiv = document.getElementById("movie-tab");
   showTabDiv.innerHTML = "";
-  for (show of allShowsList) {
+  for (let show of allShowsList) {
     let showDiv = document.createElement("div");
     showDiv.classList.add("show");
     let headlineDiv = document.createElement("div");
     let nameDiv = document.createElement("div");
     nameDiv.textContent = show.getName();
     nameDiv.classList.add("show-name");
-    let star = document.createElement("div");
-    star.classList.add("star");
-    star.innerHTML = `<i class="fa-regular fa-star" onmouseover="this.className = 'fa-solid fa-star'"; onmouseout="this.className='fa-regular fa-star'" ></i>`;
-    star.addEventListener("click", (e) => {
-      favouriteShows.push(e.currentTarget.parentNode.firstChild.innerText);
-      console.log(favouriteShows);
-    }) 
+    // TODO: EVTL Favourites wieder hinzufügen
+    // let star = document.createElement("div"); 
+    // star.classList.add("star");
+    // star.innerHTML = `<i class="fa-regular fa-star" onmouseover="this.className = 'fa-solid fa-star'"; onmouseout="this.className='fa-regular fa-star'" ></i>`;
+    // star.addEventListener("click", (e) => {
+    //   favouriteShows.push(e.currentTarget.parentNode.firstChild.innerText);
+    //   console.log(favouriteShows);
+    // }) 
     let showImg = document.createElement("img");
     showImg.src = show.getImage();
-    headlineDiv.append(nameDiv, star);
+    headlineDiv.append(nameDiv);
     headlineDiv.classList.add("showHeadline");
     showDiv.append(headlineDiv, showImg);
+
+    showDiv.addEventListener('click', (e) => {
+        let clickedShow
+        if (e.path.length === 8) {
+            clickedShow = e.path[1]
+        } else {
+            clickedShow = e.path[0]
+        }
+        openModal(show)
+    });
+
+    showDiv.append(nameDiv, showImg);
     showTabDiv.appendChild(showDiv);
   }
 }
@@ -70,6 +83,100 @@ form.addEventListener("submit", (e) => {
   let input = document.getElementById("show-input").value;
   console.log(input);
   fetchFromTvMazeAPI(input);
+  setData(input);
 });
 
-fetchFromTvMazeAPI("man");
+const input = document.getElementById("show-input");
+input.addEventListener("focus", () => {
+  let searchHistory = getData().reverse();
+  console.log(searchHistory);
+  let filteredSearchHistory = [];
+  if (searchHistory.length > 5) {
+    for (let i = 0; i<5; i++) {
+      filteredSearchHistory.push(searchHistory[i]);
+    }
+  } else {
+    filteredSearchHistory = searchHistory;
+  }
+  const searchList = document.getElementById("searchList");
+  searchList.classList.remove("hidden-el");
+  searchList.innerHTML = "";
+  filteredSearchHistory.forEach((item) => {
+    let listItem = document.createElement("li");
+    listItem.classList.add("searchItem");
+    listItem.innerHTML = item;
+    searchList.append(listItem);
+    listItem.addEventListener("click", (e) => {
+      const input = document.getElementById("show-input");
+      input.value = e.target.innerHTML;
+    });
+    
+  });
+  console.log(filteredSearchHistory);
+});
+
+input.addEventListener("blur", () => setTimeout(clearList,100));
+
+function clearList() {
+  const searchList = document.getElementById("searchList");
+  searchList.classList.add("hidden-el");
+}
+
+fetchFromTvMazeAPI("star wars"); // :) =p
+
+// Modal functionality
+const modal = document.querySelector('.modal');
+const overlay = document.getElementById('overlay');
+const closeModalButton = document.querySelector('[data-close-modal]');
+const modalShowTitle = document.querySelector(".show-title")
+const modalShowTags = document.querySelector(".show-tags")
+const modalShowSummary = document.querySelector(".show-summary")
+const modalShowUrl= document.querySelector(".show-url")
+const modalShowImg= document.querySelector(".show-image")
+
+
+closeModalButton.addEventListener('click', () => {
+    closeModal();
+});
+
+overlay.addEventListener('click', () => {
+    closeModal();
+});
+
+function closeModal() {
+    modal.classList.remove('active');
+	overlay.classList.remove('active');
+}
+
+function openModal(show) {
+	modal.classList.add('active');
+	overlay.classList.add('active');
+    fillModalWithShowData(show)
+}
+
+function fillModalWithShowData(show) {
+    console.log(show)
+    modalShowTitle.textContent = show.name
+    modalShowImg.src = show.image ? show.image : "https://via.placeholder.com/210x295/111217/FFFFFF/?text=No%20Image"
+    modalShowSummary.innerHTML = show.summary
+    modalShowTags.textContent = `${show.language ? show.language : ""} - ${show.mainGenre ? show.mainGenre : ""}`
+    modalShowUrl.href = show.tvMazeUrl
+    // 1. delete the old data
+    // 2. get the data from the clicked show
+    // 3. display the data in the dom
+}
+
+function setData(newDataPoint) {
+  let myDataDeserialized = getData();
+  myDataDeserialized.push(newDataPoint);
+  let myDataSerialized = JSON.stringify(myDataDeserialized);
+  localStorage.setItem("myData", myDataSerialized);
+}
+
+function getData() {
+  let myDataDeserialized = []
+  if (localStorage.getItem("myData") !== null) {
+    myDataDeserialized = JSON.parse(localStorage.getItem("myData"));
+  }
+  return myDataDeserialized;
+}
