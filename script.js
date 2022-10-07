@@ -17,7 +17,7 @@ async function fetchFromTvMazeAPI(searchQuery) {
 function getRelevantInformationFromJsonData(allShowsData) {
     let allShowsList = []
     for (show of allShowsData) {
-        console.log(show);
+        // console.log(show);
         let showData = show.show;
         let language = showData.language;
         let name = showData.name;
@@ -43,25 +43,37 @@ function renderShowsToPage(allShowsList) {
   for (let show of allShowsList) {
     let showDiv = document.createElement("div");
     showDiv.classList.add("show");
-    let headlineDiv = document.createElement("div");
+    // let headlineDiv = document.createElement("div");
     let nameDiv = document.createElement("div");
-    nameDiv.textContent = show.getName();
+    nameDiv.textContent = show.name
     nameDiv.classList.add("show-name");
-    // TODO: EVTL Favourites wieder hinzufügen
-    // let star = document.createElement("div"); 
-    // star.classList.add("star");
-    // star.innerHTML = `<i class="fa-regular fa-star" onmouseover="this.className = 'fa-solid fa-star'"; onmouseout="this.className='fa-regular fa-star'" ></i>`;
-    // star.addEventListener("click", (e) => {
-    //   favouriteShows.push(e.currentTarget.parentNode.firstChild.innerText);
-    //   console.log(favouriteShows);
-    // }) 
-    let showImg = document.createElement("img");
-    showImg.src = show.getImage();
-    headlineDiv.append(nameDiv);
-    headlineDiv.classList.add("showHeadline");
-    showDiv.append(headlineDiv, showImg);
 
-    showDiv.addEventListener('click', (e) => {
+    let showImg = document.createElement("img");
+    showImg.classList.add("show-image")
+    showImg.src = show.image
+
+    let star = document.createElement("i");
+    
+    addCorrectClassName(show, star)
+
+    star.style.position = "relative"
+    star.style.alignSelf = "flex-end"
+    star.style.marginRight = "20px"
+    star.style.bottom = "0px"
+    showDiv.appendChild(star)
+    
+    
+    star.addEventListener("click", (e) => {
+      setFavourites(show)
+      
+      toggleStar(e.target)
+    }) 
+
+    // headlineDiv.append(nameDiv);
+    // headlineDiv.classList.add("showHeadline");
+    showDiv.append(showImg);
+
+    showImg.addEventListener('click', (e) => {
         let clickedShow
         if (e.path.length === 8) {
             clickedShow = e.path[1]
@@ -84,6 +96,7 @@ form.addEventListener("submit", (e) => {
   console.log(input);
   fetchFromTvMazeAPI(input);
   setData(input);
+  favsButton.style.display = "block"
 });
 
 const input = document.getElementById("show-input");
@@ -180,3 +193,63 @@ function getData() {
   }
   return myDataDeserialized;
 }
+
+function getFavourites() {
+  if (localStorage.getItem("favourites") !== null) {
+    let favShows = JSON.parse(localStorage.getItem("favourites"));
+    return favShows
+  } else {
+    return []
+  }
+}
+
+function setFavourites(newFavShow) {
+  let favShows = getFavourites()
+  if (containsObject(newFavShow, favShows)) {
+    let newFavShows = favShows.filter(show => show.name !== newFavShow.name)
+    localStorage.setItem("favourites", JSON.stringify(newFavShows));
+  } else {
+    favShows.push(newFavShow);
+    localStorage.setItem("favourites", JSON.stringify(favShows));
+  }
+}
+
+function containsObject(show, array) {
+  for (let i = 0; i < array.length; i++) {
+      if (array[i].name === show.name) {
+          return true;
+      }
+  }
+
+  return false;
+}
+
+function toggleStar(star) {
+  if (star.className === "fa-regular fa-star") {
+    star.className = "fa-solid fa-star"
+  } else {
+    star.className = "fa-regular fa-star"
+  }
+}
+
+function addCorrectClassName(show, star) {
+  const favs = getFavourites()
+  
+  if (favs === null) return
+
+  if (containsObject(show, favs)) {
+    star.classList.add("fa-solid", "fa-star");
+  } else {
+    star.classList.add("fa-regular", "fa-star");
+  }
+}
+
+const favsButton = document.getElementById("favourites-button")
+
+favsButton.addEventListener("click", () => {
+  const favourites = getFavourites()
+  renderShowsToPage(favourites)
+  if (favsButton.textContent === "Favoriten anzeigen") {
+    favsButton.style.display = "none"
+  }
+})

@@ -184,6 +184,13 @@ form {
 	position: relative;
 }
 
+#favourites-button {
+	margin-left: 20px;
+	background-color: hsl(var(--accent));
+	border-radius: 5px;
+	padding: 10px;
+}
+
 .shows-container {
 	min-height: max-content;
 	/* border: 1px solid black; */
@@ -200,7 +207,6 @@ form {
 	align-items: center;
 	justify-content: space-between;
 	/* outline: 2px solid red; */
-	cursor: pointer;
 }
 
 @media (max-width: 524px) {
@@ -216,10 +222,6 @@ form {
 		flex-direction: column;
 		justify-content: space-around;
 		align-items: center;
-	}
-
-	.show-image {
-		width: 40%;
 	}
 
 	.modal.active div {
@@ -282,6 +284,7 @@ form {
 
 .show-image {
 	margin: 0 100px 0 100px;
+	cursor: pointer;
 }
 
 .show-tags {
