@@ -73,14 +73,9 @@ function renderShowsToPage(allShowsList) {
     // headlineDiv.classList.add("showHeadline");
     showDiv.append(showImg);
 
-    showImg.addEventListener('click', (e) => {
-        let clickedShow
-        if (e.path.length === 8) {
-            clickedShow = e.path[1]
-        } else {
-            clickedShow = e.path[0]
-        }
+    showImg.addEventListener('click', () => {
         openModal(show)
+        fillModalWithShowData(show)
     });
 
     showDiv.append(nameDiv, showImg);
@@ -164,7 +159,6 @@ function closeModal() {
 function openModal(show) {
 	modal.classList.add('active');
 	overlay.classList.add('active');
-    fillModalWithShowData(show)
 }
 
 function fillModalWithShowData(show) {
@@ -174,9 +168,6 @@ function fillModalWithShowData(show) {
     modalShowSummary.innerHTML = show.summary
     modalShowTags.textContent = `${show.language ? show.language : ""} - ${show.mainGenre ? show.mainGenre : ""}`
     modalShowUrl.href = show.tvMazeUrl
-    // 1. delete the old data
-    // 2. get the data from the clicked show
-    // 3. display the data in the dom
 }
 
 function setData(newDataPoint) {
